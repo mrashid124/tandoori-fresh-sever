@@ -8,6 +8,16 @@ const port = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
+app.use(
+    cors({
+      origin: [
+        "http://localhost:5173",
+        
+      ],
+      credentials: true,
+    })
+  );
+
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.9ekrxrn.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
