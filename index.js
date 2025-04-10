@@ -76,8 +76,48 @@ async function run() {
         res.send(result);
       });
 
+
+
+      // app.get("/myaddedfoods/:email", verify, async (req, res) => {
+      //   if (req.user.email !== req.params.email) {
+      //     return res.status(403).send({ message: "forbidden access" });
+      //   }
+  
+      //   const result = await foodsCollection
+      //     .find({ email: req.params.email })
+      //     .toArray();
+      //   res.send(result);
+      // });
+
           // Gallery Collection api
-    app.get("/gallery", async (req, res) => {
+    
+
+          app.put("/updateCard/:id", async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: new ObjectId(id) };
+            const options = { upsert: true };
+            const updatedCard = req.body;
+            const updateCard = {
+              $set: {
+                quantity: updatedCard.quantity,
+                price: updatedCard.price,
+                photoURL: updatedCard.photoURL,
+                foodOrigin: updatedCard.foodOrigin,
+                foodName: updatedCard.foodName,
+                foodCategory: updatedCard.foodCategory,
+                description: updatedCard.description,
+              },
+            };
+            const result = await foodsCollection.updateOne(
+              filter,
+              updateCard,
+              options
+            );
+            res.send(result);
+          });
+
+    
+      app.get("/gallery", async (req, res) => {
         const cursor = galleryCollection.find();
         const result = await cursor.toArray();
         res.send(result);
@@ -150,7 +190,7 @@ async function run() {
     });
 
 
-    
+
 
 
     await client.connect();
